@@ -90,27 +90,40 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
     private class MapBagIterator implements Iterator<T> {
         private int index = 0;
         private int count = 0;
-        private Iterator<T> keyIterate = contents.keySet().iterator();      //Iterator of keySet
         private Set<T> keySet = contents.keySet();                          //A set of all the keys
+        private ArrayList<T> keyList = new ArrayList<>(keySet);             //A list of all keys
 
-        private ArrayList<T> allOccurrences() {          //method that gets an ArrayList of occurrences
+        /*private ArrayList<T> allOccurrences() {          //method that gets an ArrayList of occurrences
             ArrayList<T> array = new ArrayList<>();
             for (T key : keySet) {
-                for (count = 0; count < contents.get(keyIterate.next()); count++) {
+                for (int i = 0; i < contents.get(keyIterate.next()); i++) {
                     array.add(key);
                 }
             }
             return array;
-        }
+        }*/
 
         public boolean hasNext() {
-            return keyIterate.hasNext();
+            //return keyIterate.hasNext();
+            if (index < keyList.size()) {
+                if (count < contents.get(keyList.get(index))) {
+                    return true;
+                }
+                if ((count == contents.get(keyList.get(index))) && ((index + 1) < keyList.size())) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public T next() {
-            T nextValue = allOccurrences().get(index);
-            index++;
-            return nextValue;
+            if (count < contents.get(keyList.get(index))) {
+                count++;
+                return keyList.get(index);
+            }
+            count = 1;
+            index ++;
+            return keyList.get(index);
         }
     }
 
