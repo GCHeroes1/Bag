@@ -69,7 +69,6 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
     }
 
     private class MapBagUniqueIterator implements Iterator<T> {
-        // fix this shit pls
         private int index = 0;
         private Set<T> keyset = contents.keySet();
         private ArrayList<T> keyArray = new ArrayList<>(keyset);
