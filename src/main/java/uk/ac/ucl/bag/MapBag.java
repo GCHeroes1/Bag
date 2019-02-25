@@ -33,17 +33,26 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
         }
     }
 
-
     public void addWithOccurrences(T value, int occurrences) throws BagException {
+        for (int i = 0; i < occurrences; i++) {
+            add(value);
+        }
     }
 
     public boolean contains(T value) {
+        return contents.containsKey(value);
     }
 
     public int countOf(T value) {
+        if (this.contains(value)) {
+            return contents.get(value);
+        } else {
+            return 0;
+        }
     }
 
     public void remove(T value) {
+
     }
 
     public int size() {
