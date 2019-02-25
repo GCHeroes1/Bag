@@ -72,16 +72,14 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
     }
 
     private class MapBagUniqueIterator implements Iterator<T> {
-        private int index = 0;
-        private Set<T> keyset = contents.keySet();
-        private ArrayList<T> keyArray = new ArrayList<>(keyset);
+        private Iterator<T> keyIterate = contents.keySet().iterator();
 
         public boolean hasNext() {
-            return index < contents.size();
+            return keyIterate.hasNext();
         }
 
         public T next() {
-            return keyArray.get(index++);
+            return keyIterate.next();
         }
     }
 
@@ -92,24 +90,27 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
     private class MapBagIterator implements Iterator<T> {
         private int index = 0;
         private int count = 0;
-        private Set<T> keyset = contents.keySet();
-        private ArrayList<T> keyArray = new ArrayList<>(keyset);
+        private Iterator<T> keyIterate = contents.keySet().iterator();      //Iterator of keySet
+        private Set<T> keySet = contents.keySet();                          //A set of all the keys
+
+        private ArrayList<T> allOccurrences() {          //method that gets an ArrayList of occurrences
+            ArrayList<T> array = new ArrayList<>();
+            for (T key : keySet) {
+                for (count = 0; count < contents.get(keyIterate.next()); count++) {
+                    array.add(key);
+                }
+            }
+            return array;
+        }
 
         public boolean hasNext() {
-            if (index < contents.size()) {
-                if (contents.get(index) > 1) { //If the value is greater than 1 then there must be a next value?
-                    return true;
-                } else {
-                    return true;
-                }
-            } else {
-                return false;
-            }
+            return keyIterate.hasNext();
         }
 
         public T next() {
-            //do this
-            return lol;
+            T nextValue = allOccurrences().get(index);
+            index++;
+            return nextValue;
         }
     }
 
