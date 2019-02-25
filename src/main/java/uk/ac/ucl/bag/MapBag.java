@@ -1,6 +1,9 @@
 package uk.ac.ucl.bag;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class MapBag<T extends Comparable> extends AbstractBag<T> {
 
@@ -82,10 +85,36 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
         }
     }
 
-    public Iterator<T> allOccurrencesIterator() {
+    public Iterator<T> iterator() {
+        return new MapBagUniqueIterator();
     }
 
-    public Iterator<T> iterator() {
+    private class MapBagIterator implements Iterator<T> {
+        private int index = 0;
+        private int count = 0;
+        private Set<T> keyset = contents.keySet();
+        private ArrayList<T> keyArray = new ArrayList<>(keyset);
+
+        public boolean hasNext() {
+            if (index < contents.size()) {
+                if (contents.get(index) > 1) { //If the value is greater than 1 then there must be a next value?
+                    return true;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public T next() {
+            //do this
+            return lol;
+        }
+    }
+
+    public Iterator<T> allOccurrencesIterator() {
+        return new MapBagIterator();
     }
 }
 
