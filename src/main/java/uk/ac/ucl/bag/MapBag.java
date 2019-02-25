@@ -1,7 +1,6 @@
 package uk.ac.ucl.bag;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 public class MapBag<T extends Comparable> extends AbstractBag<T> {
 
@@ -51,17 +50,37 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
         }
     }
 
-    public void remove(T value) {
-
+    public void remove(T value) { // Get the value if it exists, minus 1, unless its 0, then remove it
+        if (this.contains(value)) {
+            if (contents.get(value) == 0) {
+                contents.remove(value);
+            } else {
+                contents.put(value, contents.get(value) - 1);
+            }
+        }
     }
 
     public int size() {
+        return contents.size();
     }
 
     public boolean isEmpty() {
+        return contents.size() == 0;
     }
 
     private class MapBagUniqueIterator implements Iterator<T> {
+        // fix this shit pls
+        private int index = 0;
+        private Set<T> keyset = contents.keySet();
+        private ArrayList<T> keyArray = new ArrayList<>(keyset);
+
+        public boolean hasNext() {
+            return index < contents.size();
+        }
+
+        public T next() {
+            return keyArray.get(index++);
+        }
     }
 
     public Iterator<T> allOccurrencesIterator() {
