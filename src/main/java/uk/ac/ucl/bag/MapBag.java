@@ -94,12 +94,12 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
         private ArrayList<T> keyList = new ArrayList<>(keySet);             //A list of all keys
 
         public boolean hasNext() {
-            //return keyIterate.hasNext();
-            if (index < keyList.size()) {
-                if (count < contents.get(keyList.get(index))) {
+            if (index < keyList.size()) {                       // If the index is valid in the list at all
+                if (count < contents.get(keyList.get(index))) { //if the current occurrence is valid at all
                     return true;
                 }
                 if ((count == contents.get(keyList.get(index))) && ((index + 1) < keyList.size())) {
+                    // even if the current occurrence is the last one, if there is an index after, go for it
                     return true;
                 }
             }
