@@ -93,16 +93,6 @@ public class MapBag<T extends Comparable> extends AbstractBag<T> {
         private Set<T> keySet = contents.keySet();                          //A set of all the keys
         private ArrayList<T> keyList = new ArrayList<>(keySet);             //A list of all keys
 
-        /*private ArrayList<T> allOccurrences() {          //method that gets an ArrayList of occurrences
-            ArrayList<T> array = new ArrayList<>();
-            for (T key : keySet) {
-                for (int i = 0; i < contents.get(keyIterate.next()); i++) {
-                    array.add(key);
-                }
-            }
-            return array;
-        }*/
-
         public boolean hasNext() {
             //return keyIterate.hasNext();
             if (index < keyList.size()) {
