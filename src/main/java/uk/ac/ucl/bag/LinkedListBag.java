@@ -164,27 +164,35 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         return 0;
     }
 
-    public void remove(T value){
+    public void remove(T value) {
         //Key is found at head
         //Key is found at the middle / last, but not at head
         //Key is not in list
-        if (contents.getValue() == value) { //If the key is at the head
-            if (contents.getOccurrences() > 1) { //If there is more than 1 occurrence
-                contents.occurrences--;         // Subtract 1 occurrence
-            } else {
-                contents.value = (T) contents.next; //If there isn't, replace the head with the next value
+        if (contents.getValue() == value)
+            {                                                       //If the key is at the head
+            if (contents.getOccurrences() > 1)
+                {                                                   //If there is more than 1 occurrence
+                contents.occurrences--;                             // Subtract 1 occurrence
+                }
+            else
+                {
+                 contents.value = (T) contents.next;                //If there isn't, replace the head with the next value
+                }
             }
-        } else{
-            while (contents.getValue() != value) {  // While the key is not at the current node
-                Element<T> previous = contents; // Keep track of previous node
-                contents = contents.getNext(); //Iterate to next node
-                if (contents == value);             //
-                    previous.next = contents.next;
-
-
+        else {                                                       // if the key isnt at the head
+            while (contents.getValue() != value) {                                                 // While the key is not at the current node
+                Element<T> previous = contents;                   // Keep track of previous node
+                contents = contents.getNext();                    //Iterate to next node
+                if (contents == value) ;
+                {                                                // if the key has been found
+                    if (contents.getOccurrences() > 1) {         //If occurrence > 1 then need to decrement
+                        contents.occurrences--;
+                    } else {                                     //Otherwise need to remove node
+                        previous.next = contents.next;
+                    }
+                }
             }
-
-        }
+        }                                                      //if the key hasnt been found dont do anything?
     }
 
     public boolean isEmpty(){
