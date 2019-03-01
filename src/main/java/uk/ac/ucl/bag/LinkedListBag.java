@@ -17,20 +17,15 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         }
 
         public int getOccurrences() {
-            return occurrences;
-        }
-
+            return occurrences; }
         public E getValue() {
-            return value;
-        }
-
+            return value; }
         public Element<E> getNext() {
-            return next;
-        }
+            return next; }
     }
 
     private int maxSize;
-    private Element<T> contents;
+    private Element<T> head = null;
 
     public LinkedListBag() throws BagException {
         this(MAX_SIZE);
@@ -38,7 +33,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
     public int size() {
         int counter = 0;
-        Element<T> current = this.contents;
+        Element<T> current = this.head;
         while (current != null) {
             counter++;
             current = current.getNext();
@@ -54,7 +49,6 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             throw new BagException("Attempting to create a Bag with size less than 1");
         }
         this.maxSize = maxSize;
-        this.contents = new Element<T>(null, 0, null);
     }
 
     private class LinkedListBagUniqueIterator implements Iterator<T>{
@@ -71,8 +65,9 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         public T next(){
             index++;
             //Element<T> current = contents;
-            contents = contents.getNext();
-            return (T) contents;
+            T value = head.getValue();
+            head = head.getNext();
+            return value;
         }
     }
 
@@ -86,13 +81,14 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
         private ArrayList<T> getList() // trying to get an array list of everything, need to use a for loop to look at
         {                               // occurrences and add them multiple times (add the value multiple times)
+            Element<T> current = head;
             ArrayList<T> list = new ArrayList<>();
             //Element<T> current = contents;
-            while (contents != null) {
-                for (index = 0; index < contents.getOccurrences(); index++) {
-                    list.add(contents.getValue());
+            while (current != null) {
+                for (index = 0; index < current.getOccurrences(); index++) {
+                    list.add(current.getValue());
                 }
-                contents = contents.getNext();
+                current = current.getNext();
             }
             return list;
         }
@@ -100,16 +96,20 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         public boolean hasNext() {
             //Element<T> current = contents;
             if (index < size()) {
-                if (count < contents.getOccurrences()) return true;
-                if ((count == contents.getOccurrences()) && ((index + 1) < size())) return true;
+                if (count < head.getOccurrences()) return true;
+                if ((count == head.getOccurrences()) && ((index + 1) < size())) return true;
             }
             return false;
         }
 
         public T next() {
             ArrayList<T> allOccurrences = getList();
+            System.out.println(getList());
+            System.out.println(size());
             index++;
             return (allOccurrences.get(index));
+                // in has next, need a variable called index which tells me which iteration i'm on, (index starts at 0)
+                // need a for loop in next which starts with count at 1,  and loops arounduntil count = index
         }
     }
 
@@ -120,31 +120,50 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
     public void add(T value) throws BagException {
         // If I find the value, need to increment the occurrences value
         // If I don't find the value, need to add the value
-        if (contents.getValue() != null){
-            while (contents.getNext() != null){
-                if (contents.getValue() == value) {
-                    contents.occurrences++;
-                }
-                contents = contents.getNext();
+        Element<T> element = new Element<>(value, 1, null);
+        Element<T> current = head;
+
+        if(head == null)
+        {
+            head = element;
+        }
+        else {
+            while (current.getNext() != null && current.getValue() != element.getValue()) {
+                current = current.next;
+            }
+            if (current.getValue() == element.getValue())
+            {
+                current.occurrences++;
+            }
+            else if (current.getNext() == null)
+            {
+                current.next = element;
             }
         }
+    }
+        /*if (contents.getValue() == value) {
+            contents.occurrences++;
+        }
         if (size() < maxSize) {
-            this.contents.next = new Element<T>(value, 1, null);
+            while ((contents.value != null) && (contents.next != null)){
+                contents = contents.next;
+            }
+            contents = new Element<>(value, 1, null);
         } else {
             throw new BagException("Bag is full");
         }
-    }
+    }*/
 
     public void addWithOccurrences(T value, int occurrences) throws BagException{
-        for (int i = 0; i < contents.getOccurrences(); i++) {
+        for (int i = 0; i < head.getOccurrences(); i++) {
             add(value);
         }
     }
 
     public boolean contains(T value) {
-        while (contents.getValue() != value) {
-            contents = contents.getNext();
-            if (contents.getNext() == null) {
+        while (head.getValue() != value) {
+            head = head.getNext();
+            if (head.getNext() == null) {
                 return false;
             }
         }
@@ -155,7 +174,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         int counter = 0;
         if (contains(value)) {
             for (int i = 0; i < size(); i++) {
-                if (contents.getValue() == value) {
+                if (head.getValue() == value) {
                     counter++;
                 }
             }
@@ -168,27 +187,27 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         //Key is found at head
         //Key is found at the middle / last, but not at head
         //Key is not in list
-        if (contents.getValue() == value)
+        if (head.getValue() == value)
             {                                                       //If the key is at the head
-            if (contents.getOccurrences() > 1)
+            if (head.getOccurrences() > 1)
                 {                                                   //If there is more than 1 occurrence
-                contents.occurrences--;                             // Subtract 1 occurrence
+                head.occurrences--;                             // Subtract 1 occurrence
                 }
             else
                 {
-                 contents.value = (T) contents.next;                //If there isn't, replace the head with the next value
+                 head.value = (T) head.next;                //If there isn't, replace the head with the next value
                 }
             }
         else {                                                       // if the key isnt at the head
-            while (contents.getValue() != value) {                                                 // While the key is not at the current node
-                Element<T> previous = contents;                   // Keep track of previous node
-                contents = contents.getNext();                    //Iterate to next node
-                if (contents == value) ;
+            while (head.getValue() != value) {                                                 // While the key is not at the current node
+                Element<T> previous = head;                   // Keep track of previous node
+                head = head.getNext();                    //Iterate to next node
+                if (head == value) ;
                 {                                                // if the key has been found
-                    if (contents.getOccurrences() > 1) {         //If occurrence > 1 then need to decrement
-                        contents.occurrences--;
+                    if (head.getOccurrences() > 1) {         //If occurrence > 1 then need to decrement
+                        head.occurrences--;
                     } else {                                     //Otherwise need to remove node
-                        previous.next = contents.next;
+                        previous.next = head.next;
                     }
                 }
             }
@@ -196,7 +215,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
     }
 
     public boolean isEmpty(){
-        if (contents.getValue() == null){
+        if (head.getValue() == null){
             return true;
         }
         return false;

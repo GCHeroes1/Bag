@@ -58,9 +58,9 @@ public class BagFactory<T extends Comparable>
    */
   public Bag<T> getBag(int maxSize) throws BagException
   {
-    if (bagClass.equals("MapBag"))
+    if (bagClass.equals("LinkedListBag"))
     {
-      return new MapBag<T>(maxSize);
+      return new LinkedListBag<T>(maxSize);
     }
     throw new BagException
       ("Attempting to use BagFactory to create something that is not a Bag");
