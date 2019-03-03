@@ -168,12 +168,12 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
     public boolean contains(T value) {
         Element<T> current = head;
         while (current != null) {
-            if (current.value != value) {
-                return false;
+            if (current.value == value) {
+                return true;
             }
             current = current.next;
         }
-        return true;
+        return false;
     }
 
     public int countOf(T value) {
