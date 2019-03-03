@@ -53,9 +53,11 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
     private class LinkedListBagUniqueIterator implements Iterator<T>{
         private int index = 0;
+        private Element<T> current = head;
 
         public boolean hasNext() {
             if (index < size()) {
+                index++;
                 return true;
             } else {
                 return false;
@@ -63,12 +65,8 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         }
 
         public T next(){
-            Element<T> current = head;
-            for (int i = 0; i < index; i++);{
-                current = current.getNext();
-            }
-            index++;
             T value = current.getValue();
+            current = current.getNext();
             return value;
         }
     }
