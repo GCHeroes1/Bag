@@ -162,53 +162,53 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
     }
 
     public boolean contains(T value) {
-        while (head.getValue() != value) {
-            head = head.getNext();
-            if (head.getNext() == null) {
+        Element<T> current = head;
+        while (current != null) {
+            if (current.value != value) {
                 return false;
             }
+            current = current.next;
         }
         return true;
     }
 
     public int countOf(T value) {
-        int counter = 0;
-        if (contains(value)) {
-            for (int i = 0; i < size(); i++) {
-                if (head.getValue() == value) {
-                    counter++;
-                }
+        Element<T> current = head;
+        while (current.getValue() != value) {
+            current = current.next;
+            if ((current.getValue() != value) && (current.getNext() == null)) {
+                return 0;
             }
-            return counter;
         }
-        return 0;
+        return current.getOccurrences();
     }
 
     public void remove(T value) {
         //Key is found at head
         //Key is found at the middle / last, but not at head
         //Key is not in list
-        if (head.getValue() == value)
-            {                                                       //If the key is at the head
-            if (head.getOccurrences() > 1)
-                {                                                   //If there is more than 1 occurrence
-                head.occurrences--;                             // Subtract 1 occurrence
-                }
-            else
-                {
-                 head.value = (T) head.next;                //If there isn't, replace the head with the next value
-                }
+        Element<T> current = head;
+        if (current.getValue() == value)
+        {                                                       //If the key is at the head
+            if (current.getOccurrences() > 1)
+            {                                                   //If there is more than 1 occurrence
+                current.occurrences--;                             // Subtract 1 occurrence
             }
+            else
+            {
+                current.value = (T) current.next;                //If there isn't, replace the head with the next value
+            }
+        }
         else {                                                       // if the key isnt at the head
-            while (head.getValue() != value) {                                                 // While the key is not at the current node
-                Element<T> previous = head;                   // Keep track of previous node
-                head = head.getNext();                    //Iterate to next node
-                if (head == value) ;
+            while (current.getValue() != value) {                                                 // While the key is not at the current node
+                Element<T> previous = current;                   // Keep track of previous node
+                current = current.getNext();                    //Iterate to next node
+                if (current == value) ;
                 {                                                // if the key has been found
-                    if (head.getOccurrences() > 1) {         //If occurrence > 1 then need to decrement
-                        head.occurrences--;
+                    if (current.getOccurrences() > 1) {         //If occurrence > 1 then need to decrement
+                        current.occurrences--;
                     } else {                                     //Otherwise need to remove node
-                        previous.next = head.next;
+                        previous.next = current.next;
                     }
                 }
             }
