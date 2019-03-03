@@ -63,10 +63,12 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         }
 
         public T next(){
+            Element<T> current = head;
+            for (int i = 0; i < index; i++);{
+                current = current.getNext();
+            }
             index++;
-            //Element<T> current = contents;
-            T value = head.getValue();
-            head = head.getNext();
+            T value = current.getValue();
             return value;
         }
     }
@@ -79,33 +81,31 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         private int index = 0;
         private int count = 0;
 
-        private ArrayList<T> getList() // trying to get an array list of everything, need to use a for loop to look at
-        {                               // occurrences and add them multiple times (add the value multiple times)
+        private ArrayList<T> getList() { // trying to get an array list of everything, need to use a for loop to look at
+                                       // occurrences and add them multiple times (add the value multiple times)
             Element<T> current = head;
-            ArrayList<T> list = new ArrayList<>();
+            ArrayList<T> listOfElements = new ArrayList<>();
             //Element<T> current = contents;
             while (current != null) {
-                for (index = 0; index < current.getOccurrences(); index++) {
-                    list.add(current.getValue());
+                for (index = 0; index < size(); index++) {
+                    listOfElements.add(current.getValue());
                 }
                 current = current.getNext();
             }
-            return list;
+            return listOfElements;
         }
 
         public boolean hasNext() {
-            //Element<T> current = contents;
+            Element<T> current = head;
             if (index < size()) {
-                if (count < head.getOccurrences()) return true;
-                if ((count == head.getOccurrences()) && ((index + 1) < size())) return true;
+                if (count < current.getOccurrences()) return true;
+                if ((count == current.getOccurrences()) && ((index + 1) < size())) return true;
             }
             return false;
         }
 
         public T next() {
             ArrayList<T> allOccurrences = getList();
-            System.out.println(getList());
-            System.out.println(size());
             index++;
             return (allOccurrences.get(index));
                 // in has next, need a variable called index which tells me which iteration i'm on, (index starts at 0)
@@ -128,31 +128,32 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             head = element;
         }
         else {
-            while (current.getNext() != null && current.getValue() != element.getValue()) {
+            int size = 1;
+            while (current.getNext() != null && current.getValue() != value) {
                 current = current.next;
+                size++;
             }
-            if (current.getValue() == element.getValue())
+            if (current.getValue() == value)
             {
-                current.occurrences++;
+                if (size < maxSize) {
+                    int amount = current.occurrences + 1;
+                    current.occurrences = amount;
+                }
+                else {
+                    throw new BagException("Bag is full");
+                }
             }
             else if (current.getNext() == null)
             {
-                current.next = element;
+                if (size < maxSize) {
+                    current.next = element;
+                }
+                else {
+                    throw new BagException("Bag is full");
+                }
             }
         }
     }
-        /*if (contents.getValue() == value) {
-            contents.occurrences++;
-        }
-        if (size() < maxSize) {
-            while ((contents.value != null) && (contents.next != null)){
-                contents = contents.next;
-            }
-            contents = new Element<>(value, 1, null);
-        } else {
-            throw new BagException("Bag is full");
-        }
-    }*/
 
     public void addWithOccurrences(T value, int occurrences) throws BagException{
         for (int i = 0; i < head.getOccurrences(); i++) {
