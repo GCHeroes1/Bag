@@ -79,13 +79,12 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         private int index = 0;
         private int count = 0;
 
-        private ArrayList<T> getList() { // trying to get an array list of everything, need to use a for loop to look at
-                                       // occurrences and add them multiple times (add the value multiple times)
+        private ArrayList<T> getList() {
             Element<T> current = head;
             ArrayList<T> listOfElements = new ArrayList<>();
-            //Element<T> current = contents;
             while (current != null) {
-                for (index = 0; index < size(); index++) {
+                for (int i = 0; i < current.getOccurrences(); i++)
+                {
                     listOfElements.add(current.getValue());
                 }
                 current = current.getNext();
@@ -94,20 +93,27 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         }
 
         public boolean hasNext() {
-            Element<T> current = head;
             if (index < size()) {
-                if (count < current.getOccurrences()) return true;
-                if ((count == current.getOccurrences()) && ((index + 1) < size())) return true;
+                index++;
+                return true;
             }
             return false;
         }
 
         public T next() {
             ArrayList<T> allOccurrences = getList();
-            index++;
-            return (allOccurrences.get(index));
-                // in has next, need a variable called index which tells me which iteration i'm on, (index starts at 0)
-                // need a for loop in next which starts with count at 1,  and loops arounduntil count = index
+            count=1;
+            for (T item : allOccurrences)
+            {
+                if (index == count)
+                {
+                    return item;
+                }
+                count++;
+            }
+            return null;
+            // in has next, need a variable called index which tells me which iteration i'm on, (index starts at 0)
+            // need a for loop in next which starts with count at 1,  and loops around until count = index
         }
     }
 
@@ -154,7 +160,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
     }
 
     public void addWithOccurrences(T value, int occurrences) throws BagException{
-        for (int i = 0; i < head.getOccurrences(); i++) {
+        for (int i = 0; i < occurrences; i++) {
             add(value);
         }
     }
