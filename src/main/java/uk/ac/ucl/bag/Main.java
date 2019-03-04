@@ -89,6 +89,12 @@ public class Main
       System.out.println(bag2.toString());
       System.out.print("Bag3 to string:              ");
       System.out.println(bag3.toString());
+
+      printAll(bag3);
+      System.out.print("Bag3 without copies:         ");
+      bag3.removeAllCopies();
+      printAll(bag3);
+      //System.out.println(bag3.toString());
     }
     catch (BagException e)
     {
