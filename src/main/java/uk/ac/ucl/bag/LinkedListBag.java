@@ -93,7 +93,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         }
 
         public boolean hasNext() {
-            if (index < size()) {
+            if (index < getList().size()) {
                 index++;
                 return true;
             }
