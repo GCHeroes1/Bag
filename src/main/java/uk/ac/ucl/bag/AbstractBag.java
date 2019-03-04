@@ -28,7 +28,7 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T> {
         }
         for (T value : b) {
             if (!result.contains(value)) result.add(value);
-        }
+        } //test
         return result;
     }
 
@@ -85,6 +85,7 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T> {
             }
         }
         for (T value : bag) {
+            int count = bag.countOf(value);
             if (result.contains(value)) {
                 result.remove(value);
             }

@@ -200,7 +200,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             }
             else
             {
-                current.value = (T) current.next;                //If there isn't, replace the head with the next value
+                head = current.next;                //If there isn't, replace the head with the next value
             }
         }
         else {                                                       // if the key isnt at the head

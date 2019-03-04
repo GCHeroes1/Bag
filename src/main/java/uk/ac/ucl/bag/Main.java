@@ -99,9 +99,12 @@ public class Main
       bag6.addWithOccurrences("abc", 3);
       bag6.addWithOccurrences("def", 3);
       bag6.addWithOccurrences("hij", 6);
-
-      System.out.print("Bag6 minus Bag1              ");
-      System.out.print(bag6.subtract(bag1).toString());
+      System.out.print("Bag6:                        ");
+      System.out.println(bag6.toString());
+      System.out.print("Bag1:                        ");
+      System.out.println(bag1.toString());
+      System.out.print("Bag6 minus Bag1:             ");
+      System.out.println(bag6.subtract(bag1).toString());
     }
     catch (BagException e)
     {
