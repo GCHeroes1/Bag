@@ -207,7 +207,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             while (current.getValue() != value) {                                                 // While the key is not at the current node
                 Element<T> previous = current;                   // Keep track of previous node
                 current = current.getNext();                    //Iterate to next node
-                if (current.value == value)
+                if (current.value.equals(value))
                 {                                                // if the key has been found
                     if (current.occurrences > 1) {         //If occurrence > 1 then need to decrement
                         current.occurrences--;

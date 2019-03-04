@@ -33,6 +33,7 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T> {
     }
 
     public String toString() {
+        Boolean check = false;
         Bag<T> bag = null;
         try {
             bag = BagFactory.getInstance().getBag();
@@ -41,10 +42,15 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T> {
         }
         String result = "[ ";
         for (T value : this) {
+            if (check == false) {
+                check = true;
+            } else {
+                result = result + ", ";
+            }
             if (!bag.contains(value)) {
                 result = result + value + ": ";
             }
-            result = result + this.countOf(value) + " ";
+            result = result + this.countOf(value);
             if (bag.allOccurrencesIterator().hasNext()) {
                 result = result + ",";
             }
@@ -54,12 +60,12 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T> {
     }
 
     public void removeAllCopies() {
-        Bag<T> bag = null;
+        /*Bag<T> bag = null;
         try {
             bag = BagFactory.getInstance().getBag();
         } catch (BagException e) {
             e.printStackTrace();
-        }
+        }*/
         for (T value : this) {
             if (this.countOf(value) != 1) {
                 while (this.countOf(value) != 1) {
@@ -69,5 +75,20 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T> {
                 }
             }
         }
+    }
+
+    public Bag<T> subtract(Bag<T> bag) throws  BagException {
+        Bag<T> result = BagFactory.getInstance().getBag();
+        for (T value : this) {
+            if (!result.contains(value)) {
+                result.addWithOccurrences(value, this.countOf(value));
+            }
+        }
+        for (T value : bag) {
+            if (result.contains(value)) {
+                result.remove(value);
+            }
+        }
+        return result;
     }
 }

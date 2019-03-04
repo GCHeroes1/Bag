@@ -45,6 +45,7 @@ public class Main
       Bag<String> bag1;
       Bag<String> bag2;
       Bag<String> bag3;
+      Bag<String> bag6;
 
       bag1 = factory.getBag();
       bag1.add("abc");
@@ -90,11 +91,17 @@ public class Main
       System.out.print("Bag3 to string:              ");
       System.out.println(bag3.toString());
 
-      printAll(bag3);
       System.out.print("Bag3 without copies:         ");
       bag3.removeAllCopies();
       printAll(bag3);
-      //System.out.println(bag3.toString());
+
+      bag6 = factory.getBag();
+      bag6.addWithOccurrences("abc", 3);
+      bag6.addWithOccurrences("def", 3);
+      bag6.addWithOccurrences("hij", 6);
+
+      System.out.print("Bag6 minus Bag1              ");
+      System.out.print(bag6.subtract(bag1).toString());
     }
     catch (BagException e)
     {
