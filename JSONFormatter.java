@@ -2,9 +2,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class JSONFormatter {
-    public static ArrayList<StringBuilder> Formatter() throws FileNotFoundException {
+    public static ArrayList<StringBuilder> Formatter(ArrayList<Patient> PatientArrayList) {
         ArrayList<StringBuilder> PatientList = new ArrayList<>();
-        ArrayList<Patient> PatientArrayList = ReadCSV.Scanner();
         for (int i = 1; i < PatientArrayList.size(); i++) {
             StringBuilder patient = new StringBuilder();
             patient.append("{\"");
@@ -110,15 +109,21 @@ public class JSONFormatter {
             PatientList.add(patient);
             patient.append("}");
         }
-        System.out.println(PatientList.get(5));
+        System.out.println(PatientList.get(0));
         return PatientList;
+    }
+
+    public static ArrayList<Patient> getPatientArrayList() throws FileNotFoundException{
+        ArrayList<Patient> PatientArrayList = ReadCSV.Scanner(ReadCSV.getFile());
+        return PatientArrayList;
     }
 
     public static void main(String[] args) {
         try {
-            new JSONFormatter().Formatter();
+            new JSONFormatter().Formatter(JSONFormatter.getPatientArrayList());
         } catch (FileNotFoundException e) {
             System.out.println("====> File not found...");
         }
+
     }
 }
