@@ -1,0 +1,16 @@
+<toolSet name="External Tools">
+  <tool name="Parser" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$USER_HOME$/Downloads/jdk-11.0.2/bin/java" />
+      <option name="PARAMETERS" value="-jar lib/java-cup-11b.jar -destdir src/main/java/ -parser Parser src/main/java/Parser.cup" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Downloads/jdk-11.0.2/bin" />
+    </exec>
+  </tool>
+  <tool name="Lexer" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$USER_HOME$/Downloads/jdk-11.0.2/bin/java" />
+      <option name="PARAMETERS" value="-jar lib/jflex-1.6.1.jar -d src/main/java/ src/main/java/Lexer.lex " />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Downloads/jdk-11.0.2/bin" />
+    </exec>
+  </tool>
+</toolSet>
